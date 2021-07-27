@@ -11,12 +11,13 @@ func GetAllProducts(pr *[]Product) (err error) {
 	return nil
 }
 func CreateProduct(pr *Product) (err error) {
-	if err = Config.DB.Create(pr).Error; err != nil {
+	err = Config.DB.Create(pr).Error
+	if err != nil {
 		return err
 	}
 	return nil
 }
-func GetProductByID(pr *Product, id string) (err error) {
+func GetProductByID(pr *Product, id int16) (err error) {
 	if err = Config.DB.Where("id = ?", id).First(pr).Error; err != nil {
 		return err
 	}
@@ -28,7 +29,7 @@ func UpdateProduct(pr1 *Product,pr2 *Product) (err error) {
 	Config.DB.Save(pr2)
 	return nil
 }
-func DeleteProduct(pr *Product, id string) (err error) {
+func DeleteProduct(pr *Product, id int16) (err error) {
 	Config.DB.Where("id = ?", id).Delete(pr)
 	return nil
 }
