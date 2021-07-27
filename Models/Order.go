@@ -11,13 +11,13 @@ func CreateOrder(or *Order) (err error) {
 	}
 	return nil
 }
-func GetOrderByID(or *Order, oID int16) (err error) {
+func GetOrderByID(or *Order, oID string) (err error) {
 	if err = Config.DB.Where("order_id = ?", oID).First(or).Error; err != nil {
 		return err
 	}
 	return nil
 }
-func GetOrderByCID(or *[]Order, cID int16) (err error) {
+func GetOrderByCID(or *[]Order, cID string) (err error) {
 	if err = Config.DB.Where("customer_id = ?", cID).Find(or).Error; err != nil {
 		return err
 	}

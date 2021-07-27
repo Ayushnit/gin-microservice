@@ -17,19 +17,19 @@ func CreateProduct(pr *Product) (err error) {
 	}
 	return nil
 }
-func GetProductByID(pr *Product, id int16) (err error) {
-	if err = Config.DB.Where("id = ?", id).First(pr).Error; err != nil {
+func GetProductByID(pr *Product, id string) (err error) {
+	if err = Config.DB.Where("product_id = ?", id).First(pr).Error; err != nil {
 		return err
 	}
 	return nil
 }
-func UpdateProduct(pr1 *Product,pr2 *Product) (err error) {
-	pr2.Price=pr1.Price
-	pr2.Quantity=pr1.Quantity
+func UpdateProduct(pr2 *Product,qty int16,price int16) (err error) {
+	pr2.Price=price
+	pr2.Quantity=qty
 	Config.DB.Save(pr2)
 	return nil
 }
-func DeleteProduct(pr *Product, id int16) (err error) {
-	Config.DB.Where("id = ?", id).Delete(pr)
+func DeleteProduct(pr *Product, id string) (err error) {
+	Config.DB.Where("product_id = ?", id).Delete(pr)
 	return nil
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gin-microservice/Config"
 	"gin-microservice/Models"
+	"gin-microservice/Routes"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -16,12 +17,10 @@ func main() {
 	if err != nil {
 		fmt.Println("Status:", err)
 	}
-	_ = Config.DB.Migrator().DropTable(&Models.Customer{}, &Models.Product{}, &Models.Order{})
 	Config.DB.AutoMigrate(&Models.Product{},&Models.Order{},&Models.Customer{})
-	//r1 := Routes.SetupRouterRetailer()
-	//r1.Run()
-	//
-	//r2:=Routes.SetupRouterCustomer()
-	//r2.Run()
+
+	r := Routes.SetupRouter()
+	r.Run()
+
 }
 

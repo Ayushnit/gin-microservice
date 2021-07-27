@@ -5,7 +5,6 @@ import (
 	"gin-microservice/Models"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"strconv"
 )
 
 func GetProducts(c *gin.Context) {
@@ -36,9 +35,8 @@ func CreateProduct(c *gin.Context) {
 }
 func GetProductByID(c *gin.Context) {
 	id := c.Params.ByName("id")
-	ID,_:=strconv.Atoi(id)
 	var pr Models.Product
-	err := Models.GetProductByID(&pr, int16(ID))
+	err := Models.GetProductByID(&pr, id)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
@@ -46,27 +44,24 @@ func GetProductByID(c *gin.Context) {
 	}
 }
 func UpdateProduct(c *gin.Context) {
-	var pr1 Models.Product
-	id := c.Params.ByName("id")
-	ID,_:=strconv.Atoi(id)
-	err := Models.GetProductByID(&pr1, int16(ID))
-	if err != nil {
-		c.JSON(http.StatusNotFound, pr1)
-	}
-	c.BindJSON(&pr1)
 	var pr2 Models.Product
-	err = Models.UpdateProduct(&pr1,&pr2)
-	if err != nil {
-		c.AbortWithStatus(http.StatusNotFound)
+	c.BindJSON(&pr2)
+	qty:=pr2.Quantity
+	price:=pr2.Price
+
+	id := c.Params.ByName("id")
+	err := Models.GetProductByID(&pr2,id)
+	er:=Models.UpdateProduct(&pr2,qty,price)
+	if err != nil || er !=nil{
+		c.JSON(http.StatusNotFound, pr2)
 	} else {
-		c.JSON(http.StatusOK, pr1)
+		c.JSON(http.StatusOK,pr2)
 	}
 }
 func DeleteProduct(c *gin.Context) {
 	var pr Models.Product
 	id := c.Params.ByName("id")
-	ID,_:=strconv.Atoi(id)
-	err := Models.DeleteProduct(&pr, int16(ID))
+	err := Models.DeleteProduct(&pr,id)
 	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 	} else {
